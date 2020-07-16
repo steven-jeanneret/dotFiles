@@ -1,0 +1,215 @@
+# Set key
+set $mod Mod4
+set $alt Mod1
+
+# Set vars
+set $terminal tilix
+set $lock_app i3lock -c 000000
+
+# Font for window titles. Will also be used by the bar unless a different font
+font pango:monospace 8
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec $terminal
+
+# kill focused window
+bindsym $mod+Shift+q kill
+bindsym $mod+Control+Shift+q exec $terminal -e xkill
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# Monitor
+set $firstMonitor eDP-1
+
+# name of workspace
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+# Set workspace to specific display
+workspace $ws1 output $firstMonitor
+workspace $ws2 output $firstMonitor
+workspace $ws3 output $firstMonitor
+workspace $ws4 output $firstMonitor
+workspace $ws5 output $firstMonitor
+workspace $ws6 output $firstMonitor
+workspace $ws7 output $firstMonitor
+workspace $ws8 output $firstMonitor
+workspace $ws9 output $firstMonitor
+workspace $ws10 output $firstMonitor
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+mode "Exit (S)ignout, (R)eboot, (P)oweroff (L)ock" {
+       bindsym r exec reboot
+       bindsym s exit i3-msg exit
+       bindsym p exec poweroff
+       bindsym l exec $lock_app, mode "default"
+
+       # back to normal: Enter or Escape
+       bindsym Return mode "default"
+       bindsym Escape mode "default"
+}
+bindsym $mod+shift+e mode "Exit (S)ignout, (R)eboot, (P)oweroff (L)ock"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+        
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Floating applications
+for_window [class="jetbrains-*" title="Confirm*"] floating enable # Popup floating
+for_window [class="Peek"] floating enable
+for_window [class="Xfce4-appfinder"] floating enable
+
+# shortcut personnel
+bindsym $mod+l exec $lock_app
+
+bindsym $alt+Tab workspace back_and_forth
+bindsym $mod+Tab workspace next
+bindsym $mod+shift+Tab workspace prev
+
+## shortcut app
+bindsym $mod+shift+d exec nemo
+bindsym $mod+shift+f exec chromium
+bindsym $mod+shift+c exec code
+bindsym $mod+shift+t exec $terminal
+bindsym $mod+t exec $terminal --quake
+
+## Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% #decrease sound volume
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+## Sreen brightness controls
+bindsym XF86MonBrightnessUp exec light -A 5
+bindsym XF86MonBrightnessDown exec light -U 5
+
+## Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+bindsym Print exec  maim -s --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen
+
+bindsym Control+Escape exec $terminal -e s-tui ; exec $terminal -e htop
+bindsym $mod+m exec xfce4-appfinder previous
+
+for_window [class=".*"] border pixel 1; Border around the window
+for_window [class="Chromium"] border pixel 2; Border around the window
+for_window [class="Ulauncher"] border pixel 0; No border on albert
+
+gaps inner 2
+smart_gaps on
+smart_borders on
+focus_follows_mouse no
+focus_on_window_activation urgent
+popup_during_fullscreen smart
+new_window normal
+new_float normal
+hide_edge_borders both
+
+exec --no-startup-id ulauncher --hide-window
+exec --no-startup-id picom
+exec --no-startup-id nm-applet #Shortuct wifi in tray
+exec --no-startup-id pasystray
+exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+exec --no-startup-id xfce4-clipman
+
+exec --no-startup-id "sh -c 'sleep 5; exec pcloud'" # Delay, else it "crash"
+
+exec_always --no-startup-id autorandr --change # Load detected config
+exec_always --no-startup-id "sh -c 'sleep 2; exec ~/.config/polybar/launch.sh &'"
+exec_always --no-startup-id feh --bg-fill --randomize ~/Pictures/*
+exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
+
+#exec_always --no-startup-id "sh -c 'sleep 1; exec g810-led -a ff0000'"  # XPS 15
+
+# TODO verify if useful
+#exec --no-startup-id "sh -c 'sleep 5; exec syndaemon -i .5 -K -t -R -d'"
+#exec_always --no-startup-id setxkbmap ch -variant fr # Set keyboard to fr_CH
+#exec_always --no-startup-id xrdb .Xressources
+#exec_always --no-startup-id "sh -c 'sleep 1; exec xmodmap ~/.Xmodmap'"
+
+# Colors
+# class                 border  backgr. text    indicator child_border
+client.focused          #4c7899 #285577 #ffffff #2e9ef4   #ff7d03
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #444444 #444444 #888888 #444444   #444444
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #ffffff #ffffff #ffffff #ffffff   #ffffff
+client.background       #ffffff
