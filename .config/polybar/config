@@ -19,7 +19,7 @@ format-foreground = #FF0000
 format-background = #00FF00
 
 [colors]
-background = #CC2F343F
+background = #CC303540
 foreground = #C6C6C6
 accent = #d64937
 alert = #d08770
@@ -39,7 +39,7 @@ override-redirect = false
 bottom = true
 fixed-center = true
 width = 100%
-height = 35
+height = 30
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -88,14 +88,14 @@ type = internal/i3
 ; Only show workspaces defined on the same output as the bar
 pin-workspaces = true
 
-ws-icon-0 = 1;
-ws-icon-1 = 2;
-ws-icon-2 = 3;
-ws-icon-3 = 4;
-ws-icon-4 = 5;
-ws-icon-5 = 6;
-ws-icon-6 = 7;
-ws-icon-7 = 8;
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
 ws-icon-8 = 9;
 ws-icon-9 = 10;
 ws-icon-default = ""
