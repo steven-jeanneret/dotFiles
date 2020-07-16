@@ -2,16 +2,19 @@
 export ZSH=$HOME/.oh-my-zsh
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/code
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+#export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
 #export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv
-
-CASE_SENSITIVE="false"
+# export PATH=$PATH:$HOME/.config/composer/vendor/bin
+export TERMINFO=/usr/share/terminfo  # Backspace in Python (through minconda)
+export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 source $ZSH/oh-my-zsh.sh
-source "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-#source /usr/bin/virtualenvwrapper.sh
+source "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+source "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+# source /usr/bin/virtualenvwrapper.sh
+source /usr/share/autojump/autojump.zsh
+#source "$HOME/.zsh/completion.sh"
 
 ZSH_THEME="spaceship"
 # ORDER
@@ -29,12 +32,10 @@ SPACESHIP_PROMPT_ORDER=(
   golang
   docker
   venv
+  conda
   pyenv
   char
 )
-
-#zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
 SPACESHIP_CHAR_SYMBOL="➤  "
 
 # USER
@@ -49,6 +50,7 @@ SPACESHIP_HOST_SUFFIX=") "
 SPACESHIP_DIR_PREFIX='' # disable directory prefix, cause it's not the first section
 SPACESHIP_DIR_TRUNC='1' # show only last directory
 SPACESHIP_DIR_TRUNC_REPO=false
+SPACESHIP_CONDA_SHOW=true
 # GIT
 # Disable git symbol
 #SPACESHIP_GIT_SYMBOL="" # disable git prefix
@@ -101,10 +103,10 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(
   git
   # k
-  #colored-man
   colorize
   # dirhistory
   copydir
+  django
 )
 typeset -gA ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
@@ -116,21 +118,20 @@ ZSH_HIGHLIGHT_STYLES[command]='fg=yellow,bold'
 ZSH_HIGHLIGHT_STYLES[precommand]='fg=green, bold'
 ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=green'
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=6'
-
 bindkey '^ ' autosuggest-toggle
-
 export LANG=en_US.UTF-8
 #alias cat="colorize"
 alias cpd="copydir"
 alias l="ls"
 alias ll="ls -l"
 alias la="ls -la"
-alias drl="python manage.py livereload & python manage.py runserver --livereload-port 9000 &"
-alias drs="python manage.py runserver"
-alias dsp="python manage.py shell_plus"
-alias dmm="python manage.py makemigrations"
-alias dmi="python manage.py migrate"
-alias dsu="python manage.py createsuperuser"
+alias pmr="python manage.py runserver"
+alias pms="python manage.py shell_plus"
+alias pmm="python manage.py makemigrations"
+alias pmi="python manage.py migrate"
+alias jp="j polyticket"
+alias jd="j deeppoint"
+alias gd="git diff | egrep 'console.log|print\('"
 
 xpwd() {
     pwd | xclip -selection clipboard
@@ -155,10 +156,37 @@ gsvcred() {
 cpr() {
   rsync -ahr --info=progress2 $1 $2
 }
+gid() {
+  git diff | egrep 'console.log|print\('
+}
 
 #fpath=($fpath "$HOME/.zfunctions")
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/steven/.config/composer/vendor/bin:/home/steven/.scc/scc.py:/home/steven/.npm-global/bin"
+export PATH="/bin/:/usr/bin/:/usr/local/bin:/usr/local/sbin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/steven/.config/composer/vendor/bin:/home/steven/.scc/scc.py:$HOME/.local/bin:$HOME/bin"
 alias scc='/home/steven/.scc/scc.py'
-alias dotFiles='/usr/bin/git --git-dir=$HOME/.dotFiles/ --work-tree=$HOME'
-
 fpath=(~/Documents/cheatsheets/ $fpath)
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+
+source "/home/steven/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+source /opt/conda_auto_env/conda_auto_env.sh
+autoload -U add-zsh-book
+autoload -U compinit && compinit
+add-zsh-hook chpwd conda_auto_env
+
+zstyle ':completion:*' list-suffixes
+zstyle ':completion:*' expand prefix suffix
