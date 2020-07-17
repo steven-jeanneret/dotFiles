@@ -69,7 +69,7 @@ tray-offset-y = 0
 tray-padding = 1
 tray-maxsize = 20
 tray-scale = 1.0
-tray-position = right
+tray-position = ${env:TRAY_POSITION}
 
 ; Enable support for inter-process messaging
 ; See the Messaging wiki page for more details.
