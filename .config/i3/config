@@ -242,6 +242,7 @@ exec_always --no-startup-id picom
 exec_always --no-startup-id "sh -c 'sleep 2; exec ~/.config/polybar/launch.sh &'"
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 exec_always --no-startup-id xrdb .Xressources
+exec_always --no-startup-id setxkbmap -layout ch -variant fr -option apple:badmap
 exec_always --no-startup-id "sh -c 'sleep 1; exec xmodmap ~/.Xmodmap'"
 exec_always --no-startup-id "sh -c 'sleep 1; exec g810-led -a ffffff'"  # Work keyboard
 exec_always --no-startup-id ~/.config/i3/wallpaper.sh
