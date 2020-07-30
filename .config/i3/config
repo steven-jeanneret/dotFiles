@@ -198,6 +198,9 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym Print exec  maim -s --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen
 bindsym shift+Print exec  maim --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen all monitor
 
+bindsym $mod+Delete exec  maim -s --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen
+bindsym $mod+shift+Delete exec  maim --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen all monitor
+
 bindsym Control+Escape exec $terminal -e s-tui ; exec $terminal -e htop
 bindsym $mod+m exec xfce4-appfinder previous
 
