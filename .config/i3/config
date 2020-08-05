@@ -230,6 +230,7 @@ hide_edge_borders both
 exec --no-startup-id ulauncher --hide-window
 exec --no-startup-id nm-applet #Shortuct wifi in tray
 exec --no-startup-id pasystray
+exec --no-startup-id blueman-tray
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
 exec --no-startup-id xfce4-clipman
 
@@ -243,6 +244,7 @@ exec_always --no-startup-id "sh -c 'sleep 2; exec ~/.config/polybar/launch.sh &'
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 exec_always --no-startup-id xrdb .Xressources
 exec_always --no-startup-id setxkbmap -layout ch -variant fr -option apple:badmap
+#exec_always --no-startup-id setxkbmap -layout ch -variant fr -option
 exec_always --no-startup-id "sh -c 'sleep 1; exec xmodmap ~/.Xmodmap'"
 exec_always --no-startup-id "sh -c 'sleep 1; exec g810-led -a ffffff'"  # Work keyboard
 exec_always --no-startup-id ~/.config/i3/wallpaper.sh
