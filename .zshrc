@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export ZSH=$HOME/.oh-my-zsh
 export TERMINFO=/usr/share/terminfo  # Backspace in Python (through minconda)
 export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
@@ -5,94 +12,14 @@ export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 CASE_SENSITIVE="false"
 
 source $ZSH/oh-my-zsh.sh
-source "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+source "$HOME/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
 source "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 source /usr/share/autojump/autojump.zsh
 
-ZSH_THEME="spaceship"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 # ORDER
-SPACESHIP_PROMPT_ORDER=(
-  time     #
-  vi_mode  # these sections will be
-  user     # before prompt char
-  host     #
-  dir
-  git
-  node
-  ruby
-  xcode
-  swift
-  golang
-  docker
-  venv
-  conda
-  pyenv
-  char
-)
 
-
-SPACESHIP_CHAR_SYMBOL="➤  "
-
-# USER
-SPACESHIP_USER_PREFIX="" # remove `with` before username
-SPACESHIP_USER_SUFFIX="" # remove space before host
-# HOST
-# Result will look like this:
-#   username@:(hostname)
-SPACESHIP_HOST_PREFIX="@:("
-SPACESHIP_HOST_SUFFIX=") "
-# DIR
-SPACESHIP_DIR_PREFIX='' # disable directory prefix, cause it's not the first section
-SPACESHIP_DIR_TRUNC='1' # show only last directory
-SPACESHIP_DIR_TRUNC_REPO=false
-SPACESHIP_CONDA_SHOW=true
-# GIT
-# Disable git symbol
-#SPACESHIP_GIT_SYMBOL="" # disable git prefix
-#SPACESHIP_GIT_BRANCH_PREFIX="" # disable branch prefix too
-# Wrap git in `git:(...)`
-#SPACESHIP_GIT_PREFIX='('
-SPACESHIP_GIT_PREFIX=''
-#SPACESHIP_GIT_SUFFIX=") "
-#SPACESHIP_GIT_SUFFIT=''
-SPACESHIP_GIT_BRANCH_SUFFIX="" # remove space after branch name
-# Unwrap git status from `[...]`
-SPACESHIP_GIT_STATUS_PREFIX=""
-SPACESHIP_GIT_STATUS_SUFFIX=""
-# NODE
-SPACESHIP_NODE_PREFIX="node:("
-SPACESHIP_NODE_SUFFIX=") "
-SPACESHIP_NODE_SYMBOL=""
-# RUBY
-SPACESHIP_RUBY_PREFIX="ruby:("
-SPACESHIP_RUBY_SUFFIX=") "
-SPACESHIP_RUBY_SYMBOL=""
-# XCODE
-SPACESHIP_XCODE_PREFIX="xcode:("
-SPACESHIP_XCODE_SUFFIX=") "
-SPACESHIP_XCODE_SYMBOL=""
-# SWIFT
-SPACESHIP_SWIFT_PREFIX="swift:("
-SPACESHIP_SWIFT_SUFFIX=") "
-SPACESHIP_SWIFT_SYMBOL=""
-# GOLANG
-SPACESHIP_GOLANG_PREFIX="go:("
-SPACESHIP_GOLANG_SUFFIX=") "
-SPACESHIP_GOLANG_SYMBOL=""
-# DOCKER
-SPACESHIP_DOCKER_PREFIX="docker:("
-SPACESHIP_DOCKER_SUFFIX=") "
-SPACESHIP_DOCKER_SYMBOL=""
-# VENV
-SPACESHIP_VENV_SUFFIX=""
-SPACESHIP_VENV_PREFIX="\Uf3e2 "
-SPACESHIP_VENV_GENERIC_NAMES="()"
-
-# PYENV
-SPACESHIP_PYENV_PREFIX="python:("
-SPACESHIP_PYENV_SUFFIX=") "
-SPACESHIP_PYENV_SYMBOL=""
 DISABLE_AUTO_UPDATE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
@@ -126,9 +53,11 @@ alias pms="python manage.py shell"
 alias pmm="python manage.py makemigrations"
 alias pmi="python manage.py migrate"
 alias pmt="python manage.py test"
-alias jp="j polyticket"
+alias jup="j polyticket"
 alias jd="j deeppoint"
 alias gd="git diff | egrep 'console.log|print\('"
+alias gc="git checkout"
+alias update_code="wget -O code.deb https://code.visualstudio.com/sha/download\?build\=stable\&os\=linux-deb-x64 && sudo dpkg -i code.deb && rm code.deb"
 
 xpwd() {
     pwd | xclip -selection clipboard
@@ -154,8 +83,19 @@ cpr() {
   rsync -ahr --info=progress2 $1 $2
 }
 
+jp() {
+  j polyticket
+  tilix -a session-add-down -x "mailhog"
+  tilix -a session-add-down -x "stripe listen --forward-to localhost:8000/api/v1/modules_payments/stripe/webhooks/"
+  pmr
+}
+
+gpull() {
+  git pull origin $(git branch --show-current)
+}
+
 #fpath=($fpath "$HOME/.zfunctions")
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/steven/.config/composer/vendor/bin:/home/steven/.scc/scc.py:/home/steven/.npm-global/bin:$HOME/.local/bin:$HOME/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/steven/.config/composer/vendor/bin:/home/steven/.scc/scc.py:/home/steven/.npm-global/bin:$HOME/.local/bin:$HOME/bin:/snap/bin"
 alias scc='/home/steven/.scc/scc.py'
 alias dotFiles='/usr/bin/git --git-dir=$HOME/.dotFiles/ --work-tree=$HOME'
 
@@ -183,3 +123,6 @@ add-zsh-hook chpwd conda_auto_env
 
 zstyle ':completion:*' list-suffixes
 zstyle ':completion:*' expand prefix suffix
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

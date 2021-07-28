@@ -5,6 +5,8 @@ set $alt Mod1
 # Set vars
 set $terminal tilix
 set $lock_app i3lock -c 000000
+set $print_screen maim -s --format=png /dev/stdout | tee ~/Downloads/print_screens/$(date '+%Y_%m_%d_%H_%M_%S').png | xclip -selection clipboard -t image/png -i # Print screen
+set $print_all_screen maim --format=png /dev/stdout | tee ~/Downloads/print_screens/$(date '+%Y_%m_%d_%H_%M_%S').png | xclip -selection clipboard -t image/png -i # Print screen all monitor
 
 # Font for window titles. Will also be used by the bar unless a different font
 font pango:monospace 8
@@ -58,8 +60,9 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # Monitor
-set $firstMonitor DP-1-1 DP-2-3 DP-1-3 eDP-1
-set $secondMonitor DP-1-2 DP-1 DP-2
+set $firstMonitor DP-1-2 DP-2-3 DP-1-3 eDP-1
+set $secondMonitor DP-1-1 DP-1 DP-2
+set $thirdMonitor eDP-1
 
 # name of workspace
 set $ws1 "1"
@@ -113,7 +116,7 @@ bindsym $mod+Shift+Ctrl+4 move container to workspace $ws14
 workspace $ws1 output $firstMonitor
 workspace $ws2 output $secondMonitor
 workspace $ws3 output $firstMonitor
-workspace $ws4 output $firstMonitor
+workspace $ws4 output $thirdMonitor
 workspace $ws5 output $firstMonitor
 workspace $ws6 output $firstMonitor
 workspace $ws7 output $firstMonitor
@@ -183,7 +186,7 @@ bindsym $mod+Tab workspace next
 bindsym $mod+shift+Tab workspace prev
 
 ## shortcut app
-bindsym $mod+shift+d exec nemo
+bindsym $mod+shift+d exec nautilus
 bindsym $mod+shift+f exec chromium
 bindsym $mod+shift+c exec code
 bindsym $mod+shift+t exec $terminal
@@ -204,11 +207,11 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
-bindsym Print exec  maim -s --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen
-bindsym shift+Print exec  maim --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen all monitor
+bindsym Print exec $print_screen
+bindsym shift+Print exec  $print_all_screen
 
-bindsym $mod+Delete exec  maim -s --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen
-bindsym $mod+shift+Delete exec  maim --format=png /dev/stdout | tee ~/Downloads/last_screen.png | xclip -selection clipboard -t image/png -i # Print screen all monitor
+bindsym $mod+Delete exec $print_screen
+bindsym $mod+shift+Delete exec $print_all_screen
 
 bindsym Control+Escape exec $terminal -e s-tui ; exec $terminal -e htop
 bindsym $mod+m exec xfce4-appfinder previous
