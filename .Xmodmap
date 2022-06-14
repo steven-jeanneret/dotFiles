@@ -3,5 +3,4 @@ clear control
 add control = Caps_Lock Control_L Control_R
 keycode 66 = Control_L Control_L Control_L Control_L
 
-keycode 169 = Delete
 keycode 134 = Menu

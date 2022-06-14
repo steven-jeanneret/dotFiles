@@ -8,6 +8,9 @@ fi
 export ZSH=$HOME/.oh-my-zsh
 export TERMINFO=/usr/share/terminfo  # Backspace in Python (through minconda)
 export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+export VAGRANT_TYPE=abacus-abahost
+export NB_MINIONS=1
+
 
 CASE_SENSITIVE="false"
 
@@ -55,6 +58,9 @@ alias pmi="python manage.py migrate"
 alias pmt="python manage.py test"
 alias jup="j polyticket"
 alias jd="j deeppoint"
+alias jj="j justsearch-frontend"
+alias ja="j abahost"
+alias jg="j arcanite_gestion"
 alias gd="git diff | egrep 'console.log|print\('"
 alias gc="git checkout"
 alias update_code="wget -O code.deb https://code.visualstudio.com/sha/download\?build\=stable\&os\=linux-deb-x64 && sudo dpkg -i code.deb && rm code.deb"
